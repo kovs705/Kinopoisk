@@ -14,6 +14,12 @@
 		4E8777122A279016004E3AF9 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8777112A279016004E3AF9 /* MainVC.swift */; };
 		4E8777162A279043004E3AF9 /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8777152A279042004E3AF9 /* MainPresenter.swift */; };
 		4E8777192A2790CF004E3AF9 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8777182A2790CF004E3AF9 /* Builder.swift */; };
+		4E8777232A279402004E3AF9 /* DataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8777222A279402004E3AF9 /* DataRequest.swift */; };
+		4E8777252A2795BB004E3AF9 /* FilmsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8777242A2795BB004E3AF9 /* FilmsRequest.swift */; };
+		4E8777272A2795FD004E3AF9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8777262A2795FD004E3AF9 /* Constants.swift */; };
+		4E87772A2A27AF11004E3AF9 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8777292A27AF11004E3AF9 /* ErrorResponse.swift */; };
+		4E87772C2A28D4A8004E3AF9 /* FilmsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E87772B2A28D4A8004E3AF9 /* FilmsModel.swift */; };
+		4E87772E2A28D541004E3AF9 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E87772D2A28D541004E3AF9 /* NetworkService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +32,12 @@
 		4E8777112A279016004E3AF9 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		4E8777152A279042004E3AF9 /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
 		4E8777182A2790CF004E3AF9 /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
+		4E8777222A279402004E3AF9 /* DataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequest.swift; sourceTree = "<group>"; };
+		4E8777242A2795BB004E3AF9 /* FilmsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsRequest.swift; sourceTree = "<group>"; };
+		4E8777262A2795FD004E3AF9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4E8777292A27AF11004E3AF9 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		4E87772B2A28D4A8004E3AF9 /* FilmsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsModel.swift; sourceTree = "<group>"; };
+		4E87772D2A28D541004E3AF9 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +70,10 @@
 		4E8776FC2A278F88004E3AF9 /* Reshenie-Test */ = {
 			isa = PBXGroup;
 			children = (
-				4E8777132A27901F004E3AF9 /* Controllers */,
+				4E87771B2A2791B9004E3AF9 /* Presentation layer */,
+				4E87771C2A2791D0004E3AF9 /* Business logic layer */,
 				4E8777172A2790B5004E3AF9 /* Support */,
-				4E87770B2A278F90004E3AF9 /* Info.plist */,
+				4E87771A2A2791A9004E3AF9 /* Plist */,
 			);
 			path = "Reshenie-Test";
 			sourceTree = "<group>";
@@ -92,6 +105,83 @@
 				4E8777182A2790CF004E3AF9 /* Builder.swift */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		4E87771A2A2791A9004E3AF9 /* Plist */ = {
+			isa = PBXGroup;
+			children = (
+				4E87770B2A278F90004E3AF9 /* Info.plist */,
+			);
+			name = Plist;
+			sourceTree = "<group>";
+		};
+		4E87771B2A2791B9004E3AF9 /* Presentation layer */ = {
+			isa = PBXGroup;
+			children = (
+				4E8777132A27901F004E3AF9 /* Controllers */,
+			);
+			path = "Presentation layer";
+			sourceTree = "<group>";
+		};
+		4E87771C2A2791D0004E3AF9 /* Business logic layer */ = {
+			isa = PBXGroup;
+			children = (
+				4E8777262A2795FD004E3AF9 /* Constants.swift */,
+				4E8777202A279387004E3AF9 /* Network */,
+				4E87771F2A2791EF004E3AF9 /* UIHelper */,
+				4E87771E2A2791E5004E3AF9 /* Managers */,
+				4E87771D2A2791DC004E3AF9 /* Model */,
+			);
+			path = "Business logic layer";
+			sourceTree = "<group>";
+		};
+		4E87771D2A2791DC004E3AF9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4E87772B2A28D4A8004E3AF9 /* FilmsModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4E87771E2A2791E5004E3AF9 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				4E87772D2A28D541004E3AF9 /* NetworkService.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		4E87771F2A2791EF004E3AF9 /* UIHelper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UIHelper;
+			sourceTree = "<group>";
+		};
+		4E8777202A279387004E3AF9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				4E8777282A27AF04004E3AF9 /* Response */,
+				4E8777212A2793F2004E3AF9 /* Request */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		4E8777212A2793F2004E3AF9 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				4E8777222A279402004E3AF9 /* DataRequest.swift */,
+				4E8777242A2795BB004E3AF9 /* FilmsRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		4E8777282A27AF04004E3AF9 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				4E8777292A27AF11004E3AF9 /* ErrorResponse.swift */,
+			);
+			path = Response;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,11 +254,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E87772E2A28D541004E3AF9 /* NetworkService.swift in Sources */,
 				4E8776FE2A278F88004E3AF9 /* AppDelegate.swift in Sources */,
+				4E87772C2A28D4A8004E3AF9 /* FilmsModel.swift in Sources */,
 				4E8777122A279016004E3AF9 /* MainVC.swift in Sources */,
 				4E8777002A278F88004E3AF9 /* SceneDelegate.swift in Sources */,
+				4E8777232A279402004E3AF9 /* DataRequest.swift in Sources */,
+				4E8777252A2795BB004E3AF9 /* FilmsRequest.swift in Sources */,
 				4E8777162A279043004E3AF9 /* MainPresenter.swift in Sources */,
+				4E87772A2A27AF11004E3AF9 /* ErrorResponse.swift in Sources */,
 				4E8777192A2790CF004E3AF9 /* Builder.swift in Sources */,
+				4E8777272A2795FD004E3AF9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
