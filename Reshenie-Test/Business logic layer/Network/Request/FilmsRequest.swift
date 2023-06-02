@@ -7,7 +7,7 @@
 
 import Foundation
 
-// https://kinopoiskapiunofficial.tech/api/v2.2
+// https://kinopoiskapiunofficial.tech/api/v2.1
 
 struct FilmsRequest: DataRequest {
     
@@ -17,8 +17,6 @@ struct FilmsRequest: DataRequest {
     var keyword: String
     var page = 1
     var resultAction: Web.searchBy
-    
-    var queryItems: [String : String] = [:]
     
     var url: String {
         let baseUrl = "https://kinopoiskapiunofficial.tech/api/v2.1"
@@ -35,23 +33,19 @@ struct FilmsRequest: DataRequest {
         
     }
     
-    mutating func initQueryItems() {
+    var queryItems: [String : String] {
         switch resultAction {
         case .searchByKeyword:
-            self.queryItems = [
+            return [
                 "keyword": keyword,
                 "page": "\(page)"
             ]
-            break
         case .top:
-            self.queryItems = [
-                
+            return [
                 "type": Web.TopBy.topBest250.rawValue,
                 "page": "\(page)"
             ]
-            break
         }
-        
     }
     
     var method: HTTPMethod {
@@ -69,7 +63,6 @@ struct FilmsRequest: DataRequest {
         self.keyword = keyword ?? ""
         self.page = page
         self.resultAction = resultAction
-        initQueryItems()
     }
     
     func decode(_ data: Data) throws -> [Film]? {

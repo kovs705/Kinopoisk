@@ -1,54 +1,54 @@
 //
-//  MainPresenter.swift
+//  SearchPresenter.swift
 //  Reshenie-Test
 //
-//  Created by Kovs on 31.05.2023.
+//  Created by Kovs on 02.06.2023.
 //
 
-import UIKit
+import Foundation
 
-protocol MainViewProtocol: AnyObject {
+protocol SearchViewProtocol: AnyObject {
     func success()
     func failure(error: Error)
 }
 
-protocol MainPresenterProtocol: AnyObject {
+protocol SearchPresenterProtocol: AnyObject {
     
-    var topFilms: [TopFilm] { get set }
+    init(view: SearchViewProtocol, networkService: NetworkService)
+    
+    var films: [Film] { get set }
     var isFetching: Bool { get set }
     var page: Int { get set }
     
-    init(view: MainViewProtocol, networkService: NetworkService)
-    
     var searchRequest: String? { get set }
-    func fetchTopFilms()
+    func fetchFilms()
 }
 
-final class MainPresenter: MainPresenterProtocol {
+final class SearchPresenter: SearchPresenterProtocol {
     
-    weak var view: MainViewProtocol?
+    weak var view: SearchViewProtocol?
     var networkService: NetworkService!
-    
-    var page = 1
-    var isFetching = false
-    var topFilms = [TopFilm]()
     
     var searchRequest: String?
     
-    required init(view: MainViewProtocol, networkService: NetworkService) {
+    var films = [Film]()
+    var isFetching = false
+    var page = 1
+    
+    required init(view: SearchViewProtocol, networkService: NetworkService) {
         self.view = view
-        self.networkService = networkService
     }
     
-    func fetchTopFilms() {
-        let request = TopFilmsRequest(page: page)
+    
+    func fetchFilms() {
+        let request = FilmsRequest(keyword: searchRequest, page: page, resultAction: .searchByKeyword)
         page += 1
         networkService.request(request) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let films):
                 guard let films else { return }
-                self.topFilms.append(contentsOf: films)
+                self.films.append(contentsOf: films)
                 self.view?.success()
                 self.isFetching = false
             case .failure(let error):

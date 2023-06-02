@@ -1,21 +1,20 @@
 //
-//  MainVC.swift
+//  SearchVC.swift
 //  Reshenie-Test
 //
-//  Created by Kovs on 31.05.2023.
+//  Created by Kovs on 02.06.2023.
 //
 
 import UIKit
 
-class MainVC: UIViewController {
+class SearchVC: UIViewController {
     
-    var presenter: MainPresenterProtocol!
+    var presenter: SearchPresenterProtocol!
     
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
-        view.backgroundColor = .blue
-        presenter.fetchTopFilms()
+        presenter.searchRequest = "Ёлки"
     }
     
     
@@ -26,14 +25,14 @@ class MainVC: UIViewController {
 
 
 // MARK: - Protocol
-extension MainVC: MainViewProtocol {
+extension SearchVC: SearchViewProtocol {
     
     func success() {
-        print(presenter.topFilms)
+        print(presenter.films)
     }
     
     func failure(error: Error) {
-        "Hello"
+        fatalError("No request")
     }
     
     
