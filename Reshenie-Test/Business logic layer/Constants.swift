@@ -20,5 +20,12 @@ enum Web {
     
     enum searchBy: String {
         case searchByKeyword = "search-by-keyword?"
+        case top = "top?"
+    }
+    
+    enum TopBy: String {
+        case topBest250 = "TOP_250_BEST_FILMS"
+        case topPopular100 = "TOP_100_POPULAR_FILMS"
+        case topAwait = "TOP_AWAIT_FILMS"
     }
 }

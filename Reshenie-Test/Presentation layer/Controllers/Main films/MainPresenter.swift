@@ -20,8 +20,7 @@ protocol MainPresenterProtocol: AnyObject {
     init(view: MainViewProtocol, networkService: NetworkService)
     
     var searchRequest: String? { get set }
-    func fetchFilms()
-    func showSearchResults()
+    func fetchFilms(resultAction: Web.searchBy)
     
 }
 
@@ -40,22 +39,20 @@ final class MainPresenter: MainPresenterProtocol {
         self.networkService = networkService
     }
     
-    func fetchFilms() {
-        <#code#>
-    }
-    
-    func showSearchResults() {
-        let request = FilmsRequest(keyword: searchRequest!, page: page)
+    func fetchFilms(resultAction: Web.searchBy) {
+        let request = FilmsRequest(keyword: searchRequest, page: page, resultAction: resultAction)
         page += 1
         networkService.request(request) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let films):
                 guard let films else { return }
-                self.films.append(contentsOf: films)
+                print(films)
+                // self.films.append(contentsOf: films)
                 self.view?.success()
                 self.isFetching = false
             case .failure(let error):
+                print(error)
                 self.view?.failure(error: error)
                 self.isFetching = false
             }

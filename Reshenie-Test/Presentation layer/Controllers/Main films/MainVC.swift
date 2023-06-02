@@ -15,6 +15,8 @@ class MainVC: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         view.backgroundColor = .blue
+        presenter.searchRequest = "Ёлки"
+        presenter.fetchFilms(resultAction: .searchByKeyword)
     }
     
     
@@ -26,6 +28,15 @@ class MainVC: UIViewController {
 
 // MARK: - Protocol
 extension MainVC: MainViewProtocol {
+    
+    func success() {
+        print(presenter.films)
+    }
+    
+    func failure(error: Error) {
+        "Hello"
+    }
+    
     
     
     
