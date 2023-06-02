@@ -21,9 +21,9 @@ class TopFilmCell: UITableViewCell {
     let placeholderImg = UIImage(named: Images.kinopoisk)
     
     func setupCell(film: TopFilm) {
+        setupViews()
         configure(film: film)
         
-        setupViews()
         setLayout()
     }
     

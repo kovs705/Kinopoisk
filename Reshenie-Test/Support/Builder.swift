@@ -9,6 +9,7 @@ import UIKit
 
 protocol BuilderProtocol {
     func getMainModule() -> UIViewController
+    func getSearchModule(request: String) -> UIViewController
 }
 
 final class Builder: BuilderProtocol {
@@ -16,6 +17,14 @@ final class Builder: BuilderProtocol {
         let view = MainVC()
         let networkService = DefaultNetworkService()
         let presenter = MainPresenter(view: view, networkService: networkService)
+        view.presenter = presenter
+        return view
+    }
+    
+    func getSearchModule(request: String) -> UIViewController {
+        let view = SearchVC()
+        let networkService = DefaultNetworkService()
+        let presenter = SearchPresenter(view: view, networkService: networkService)
         view.presenter = presenter
         return view
     }

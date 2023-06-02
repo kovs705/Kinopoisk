@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainVC: UIViewController {
     
@@ -14,8 +15,12 @@ class MainVC: UIViewController {
     private var tableView = UITableView()
     private var emptyView = UIView()
     
+    private let searchController = UISearchController()
+    
     // MARK: - viewDidLoad
     override func viewDidLoad() {
+        view.backgroundColor = .systemBackground
+        title = "Кинопоиск"
         presenter.fetchTopFilms()
         
         setupViews()
@@ -59,7 +64,7 @@ class MainVC: UIViewController {
     private func makeConstraints() {
         
         tableView.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalTo(view)
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
 //        emptyView.snp.makeConstraints { make in
@@ -68,18 +73,53 @@ class MainVC: UIViewController {
 //        }
     }
     
-    private func spinnerViewSetup() -> UIView {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
-        let spinner = UIActivityIndicatorView()
-        spinner.center = footerView.center
-        footerView.addSubview(spinner)
-        spinner.startAnimating()
-        
-        return footerView
-    }
-    
 }
 
+
+// MARK: - SearchBar
+extension MainVC {
+    func configureSearchController() {
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Search movie"
+    }
+
+    func configureNavigation() {
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+}
+
+
+//MARK: - UISearchResultsUpdating
+extension MainVC: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let query = searchController.searchBar.text else { return }
+        print(query)
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+     print(#function)
+    }
+}
+
+
+//MARK: - UISearchBarDelegate
+
+extension MainVC: UISearchBarDelegate {
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        print(#function)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let coordinator = Builder()
+        let resultViewController = coordinator.getSearchModule(request: searchBar.text!)
+        navigationController?.pushViewController(resultViewController, animated: true)
+    }
+}
+
+
+
+// MARK: - TableView
 extension MainVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,6 +130,10 @@ extension MainVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: TopFilmCell.id, for: indexPath) as! TopFilmCell
         let currentFilm = presenter.topFilms[indexPath.row]
         cell.setupCell(film: currentFilm)
+        
+        let back = UIView()
+        back.backgroundColor = .systemBackground
+        cell.selectedBackgroundView = back
         return cell
     }
     
@@ -104,7 +148,7 @@ extension MainVC: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+        return 145
     }
 }
 
