@@ -138,7 +138,6 @@
 				4E8777262A2795FD004E3AF9 /* Constants.swift */,
 				4E8777202A279387004E3AF9 /* Network */,
 				4E87771F2A2791EF004E3AF9 /* UIHelper */,
-				4E87771E2A2791E5004E3AF9 /* Managers */,
 				4E87771D2A2791DC004E3AF9 /* Model */,
 			);
 			path = "Business logic layer";
@@ -153,14 +152,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		4E87771E2A2791E5004E3AF9 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				4E87772D2A28D541004E3AF9 /* NetworkService.swift */,
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
 		4E87771F2A2791EF004E3AF9 /* UIHelper */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,6 +162,7 @@
 		4E8777202A279387004E3AF9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				4EEE677C2A2A193000515078 /* Service */,
 				4E8777282A27AF04004E3AF9 /* Response */,
 				4E8777212A2793F2004E3AF9 /* Request */,
 			);
@@ -202,6 +194,14 @@
 				4EEE677A2A2A167900515078 /* SearchPresenter.swift */,
 			);
 			path = SearchFilms;
+			sourceTree = "<group>";
+		};
+		4EEE677C2A2A193000515078 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				4E87772D2A28D541004E3AF9 /* NetworkService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -439,7 +439,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.CodingKovs.Reshenie-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -470,7 +470,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.CodingKovs.Reshenie-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
