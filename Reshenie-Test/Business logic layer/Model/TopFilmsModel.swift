@@ -22,8 +22,8 @@ struct TopFilm: Codable, Hashable {
     let genres: [Genre]
     let rating: String
     let ratingVoteCount: Int
-    let posterUrl: URL
-    let posterUrlPreview: URL
+    let posterUrl: URL?
+    let posterUrlPreview: URL?
     let ratingChange: String?
     
 }

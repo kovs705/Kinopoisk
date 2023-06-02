@@ -8,6 +8,10 @@
 import Foundation
 
 
+enum Images {
+    static let kinopoisk = "kinopoisk"
+}
+
 enum Web {
     enum APIKey {
         static let get = "a215f3a6-0ba7-4dd1-ad7d-d148800d90cf"
