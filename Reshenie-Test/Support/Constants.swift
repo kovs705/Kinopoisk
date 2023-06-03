@@ -8,6 +8,10 @@
 import Foundation
 
 
+enum Colors {
+    static let rtBlue = "rtBlue"
+}
+
 enum Images {
     static let kinopoisk = "kinopoisk"
 }

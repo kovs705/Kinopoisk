@@ -25,7 +25,7 @@ struct NavBar: View {
                 print("oops")
             } label: {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(Color(uiColor: UIColor.systemBlue))
+                    .foregroundColor(Color(uiColor: UIColor(named: Colors.rtBlue)!))
                     .font(.system(size: 20))
             }
             

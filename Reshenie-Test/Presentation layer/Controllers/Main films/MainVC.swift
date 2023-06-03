@@ -15,7 +15,7 @@ class MainVC: UIViewController {
     private var tableView = UITableView()
     private var emptyView = UIView()
     
-    private var navBar = UIView()
+    private var navBar = NavigationBar(isSearch: false)
     let symbolConfig = UIImage.SymbolConfiguration(pointSize: 22)
     
     // MARK: - viewDidLoad
@@ -41,16 +41,6 @@ class MainVC: UIViewController {
     }
     
     private func setupNavBar() {
-        let titleLabel = UILabel()
-        titleLabel.numberOfLines = 1
-        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        titleLabel.text = "Фильмы"
-        
-        let searchButton = UIButton()
-        searchButton.setImage(UIImage(systemName: "magnifyingglass", withConfiguration: symbolConfig), for: .normal)
-        searchButton.tintColor = .blue
-        
-        navBar.addSubviews(titleLabel, searchButton)
         
         navBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -58,16 +48,11 @@ class MainVC: UIViewController {
             make.height.equalTo(35)
         }
         
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(navBar)
-            make.leading.equalTo(navBar).inset(25)
+        if navBar.isSearch {
+            navBar.searchField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        } else {
+            navBar.searchButton.addTarget(self, action: #selector(openVC), for: .touchUpInside)
         }
-        
-        searchButton.snp.makeConstraints { make in
-            make.centerY.equalTo(navBar)
-            make.trailing.equalTo(navBar).inset(35)
-        }
-        
         
     }
     
@@ -84,7 +69,7 @@ class MainVC: UIViewController {
     private func setupEmptyView() {
         let book = UIImageView()
         book.image = UIImage(systemName: "book.closed.fill")
-        book.tintColor = .systemBlue
+        book.tintColor = UIColor(named: Colors.rtBlue)
         
         emptyView.addSubview(book)
         book.snp.makeConstraints { make in
@@ -119,6 +104,18 @@ class MainVC: UIViewController {
         return footerView
     }
     
+    
+    // MARK: - Obj-c funcs
+    @objc func openVC() {
+        let coordinator = Builder()
+        navigationController?.pushViewController(coordinator.getSearchModule(), animated: true)
+    }
+    
+    // MARK: - Obj-c funcs
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        print(textField.text)
+    }
+    
 }
 
 
@@ -149,6 +146,9 @@ extension MainVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let currentFilm = presenter.topFilms[indexPath.row]
         print(currentFilm)
+        
+        let coordinator = Builder()
+        navigationController?.pushViewController(coordinator.getSearchModule(), animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -181,7 +181,7 @@ extension MainVC: MainViewProtocol {
     }
     
     func failure(error: Error) {
-        "Hello)))"
+        print("Hello)))")
     }
     
 }
