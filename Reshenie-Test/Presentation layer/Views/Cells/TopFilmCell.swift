@@ -114,22 +114,23 @@ class TopFilmCell: UITableViewCell {
         baseBack.addSubviews(nameLabel, filmImageView, genreAndYearLabel, loadingActivityIndicator)
         
         baseBack.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalTo(contentView).inset(10)
+            make.leading.trailing.top.bottom.equalTo(contentView).inset(12)
         }
         
         filmImageView.snp.makeConstraints { make in
-            make.top.leading.bottom.equalTo(baseBack).inset(12)
+            make.leading.equalTo(baseBack).inset(15)
+            make.top.bottom.equalTo(baseBack).inset(20)
             make.width.equalTo(60)
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(baseBack.snp.top).offset(25)
+            make.top.equalTo(baseBack.snp.top).offset(30)
             make.leading.equalTo(filmImageView.snp.trailing).inset(-20)
             make.trailing.equalTo(baseBack.snp.trailing).inset(25)
         }
         
         genreAndYearLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(10)
+            make.top.equalTo(nameLabel.snp.bottom).offset(7)
             make.leading.equalTo(filmImageView.snp.trailing).inset(-20)
             make.trailing.equalTo(baseBack.snp.trailing).inset(25)
         }

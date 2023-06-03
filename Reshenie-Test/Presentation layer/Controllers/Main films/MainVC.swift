@@ -15,30 +15,65 @@ class MainVC: UIViewController {
     private var tableView = UITableView()
     private var emptyView = UIView()
     
-    private let searchController = UISearchController()
+    private var navBar = UIView()
+    let symbolConfig = UIImage.SymbolConfiguration(pointSize: 22)
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
+        
         view.backgroundColor = .systemBackground
+        setupViews()
         title = "Кинопоиск"
+        
         presenter.fetchTopFilms()
         
-        setupViews()
     }
     
     
     // MARK: - Other funcs
     
     private func setupViews() {
-        view.addSubviews(tableView, emptyView)
+        view.addSubviews(tableView, navBar)
         setupTableView()
         makeConstraints()
+        
+        setupNavBar()
+    }
+    
+    private func setupNavBar() {
+        let titleLabel = UILabel()
+        titleLabel.numberOfLines = 1
+        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        titleLabel.text = "Фильмы"
+        
+        let searchButton = UIButton()
+        searchButton.setImage(UIImage(systemName: "magnifyingglass", withConfiguration: symbolConfig), for: .normal)
+        searchButton.tintColor = .blue
+        
+        navBar.addSubviews(titleLabel, searchButton)
+        
+        navBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalTo(view)
+            make.height.equalTo(35)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(navBar)
+            make.leading.equalTo(navBar).inset(25)
+        }
+        
+        searchButton.snp.makeConstraints { make in
+            make.centerY.equalTo(navBar)
+            make.trailing.equalTo(navBar).inset(35)
+        }
+        
+        
     }
     
     
     private func setupTableView() {
-        tableView.frame = view.bounds
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = .systemBackground
         tableView.separatorColor = .clear
         tableView.dataSource = self
         tableView.delegate = self
@@ -64,7 +99,8 @@ class MainVC: UIViewController {
     private func makeConstraints() {
         
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalTo(view)
+            make.top.equalTo(navBar.snp.bottom).offset(20)
         }
         
 //        emptyView.snp.makeConstraints { make in
@@ -73,48 +109,16 @@ class MainVC: UIViewController {
 //        }
     }
     
-}
-
-
-// MARK: - SearchBar
-extension MainVC {
-    func configureSearchController() {
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = "Search movie"
-    }
-
-    func configureNavigation() {
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
-}
-
-
-//MARK: - UISearchResultsUpdating
-extension MainVC: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let query = searchController.searchBar.text else { return }
-        print(query)
-    }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-     print(#function)
-    }
-}
-
-
-//MARK: - UISearchBarDelegate
-
-extension MainVC: UISearchBarDelegate {
-    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        print(#function)
+    private func spinnerViewSetup() -> UIView {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
+        let spinner = UIActivityIndicatorView()
+        spinner.center = footerView.center
+        footerView.addSubview(spinner)
+        spinner.startAnimating()
+        
+        return footerView
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let coordinator = Builder()
-        let resultViewController = coordinator.getSearchModule(request: searchBar.text!)
-        navigationController?.pushViewController(resultViewController, animated: true)
-    }
 }
 
 
@@ -132,14 +136,14 @@ extension MainVC: UITableViewDataSource {
         cell.setupCell(film: currentFilm)
         
         let back = UIView()
-        back.backgroundColor = .systemBackground
+        back.backgroundColor = .clear
         cell.selectedBackgroundView = back
         return cell
     }
     
-    
 }
 
+// MARK: - UItableViewDelegate
 extension MainVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -148,10 +152,22 @@ extension MainVC: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 145
+        return 155
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        
+        if position > (tableView.contentSize.height - 100 - scrollView.frame.size.height) {
+            if !presenter.isFetching {
+                presenter.isFetching = true
+                
+                self.tableView.tableFooterView = spinnerViewSetup()
+                presenter.fetchTopFilms()
+            }
+        }
     }
 }
-
 
 // MARK: - Protocol
 extension MainVC: MainViewProtocol {
@@ -165,10 +181,9 @@ extension MainVC: MainViewProtocol {
     }
     
     func failure(error: Error) {
-        "Hello"
+        "Hello)))"
     }
     
-    
-    
-    
 }
+
+
