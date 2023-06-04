@@ -40,10 +40,6 @@ class SearchVC: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = false
-    }
-    
     func check() {
         if presenter.searchRequest!.isEmpty || presenter.films.isEmpty {
             tableView.isHidden = true
