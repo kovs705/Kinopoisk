@@ -16,27 +16,52 @@ class SearchVC: UIViewController {
     
     private var navBar = NavigationBar(isSearch: true)
     
+    // no internet error:
+    let noInternetImage = UIImageView()
+    let containerForNoInt = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 25))
+    let noInternetLabel = UILabel()
+    
+    // search error:
+    let containerNoResults = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 25))
+    let noResultsLabel = UILabel()
+    
+    
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         view.backgroundColor = .systemBackground
-        presenter.searchRequest = ""
-        presenter.fetchFilms()
         
+        presenter.searchRequest = ""
         check()
+        presenter.fetchFilms()
         
         navigationController?.navigationBar.isHidden = true
         setupViews()
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     func check() {
-        if presenter.searchRequest!.isEmpty {
+        if presenter.searchRequest!.isEmpty || presenter.films.isEmpty {
             tableView.isHidden = true
             emptyView.isHidden = false
+            containerNoResults.isHidden = false
+            noResultsLabel.isHidden = false
+            noInternetImage.isHidden = true
+            noInternetLabel.isHidden = true
+            containerForNoInt.isHidden = true
         } else {
             tableView.isHidden = false
             emptyView.isHidden = true
+            noResultsLabel.isHidden = true
+            noInternetImage.isHidden = true
+            noInternetLabel.isHidden = true
+            noInternetImage.isHidden = true
+            containerNoResults.isHidden = true
+            containerForNoInt.isHidden = true
         }
     }
     
@@ -63,8 +88,10 @@ class SearchVC: UIViewController {
         }
         
         setupEmptyView()
+        setupNoInternet()
     }
     
+    // MARK: - NavBar
     private func setupNavBar() {
         
         navBar.snp.makeConstraints { make in
@@ -80,6 +107,7 @@ class SearchVC: UIViewController {
         
     }
     
+    // MARK: - TableView
     private func setupTableView() {
         tableView.backgroundColor = .systemBackground
         tableView.separatorColor = .clear
@@ -89,6 +117,7 @@ class SearchVC: UIViewController {
         view.addSubview(tableView)
     }
     
+    // MARK: - Loading view
     private func spinnerViewSetup() -> UIView {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
         let spinner = UIActivityIndicatorView()
@@ -99,29 +128,66 @@ class SearchVC: UIViewController {
         return footerView
     }
     
+    // MARK: - No search results
     func setupEmptyView() {
-        let noResultsLabel = UILabel()
         noResultsLabel.text = "Не найдено"
         noResultsLabel.textColor = .white
         noResultsLabel.textAlignment = .center
         
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 25))
-        container.translatesAutoresizingMaskIntoConstraints = false
-        container.backgroundColor = UIColor(named: Colors.rtBlue)
-        container.layer.cornerRadius = 15
+        containerNoResults.backgroundColor = UIColor(named: Colors.rtBlue)
+        containerNoResults.layer.cornerRadius = 15
         
-        emptyView.addSubviews(container)
-        container.addSubviews(noResultsLabel)
+        emptyView.addSubviews(containerNoResults)
+        containerNoResults.addSubviews(noResultsLabel)
         
         
-        container.snp.makeConstraints { make in
+        containerNoResults.snp.makeConstraints { make in
             make.center.equalTo(emptyView)
         }
         
         noResultsLabel.snp.makeConstraints { make in
-            make.top.bottom.equalTo(container).inset(8)
-            make.leading.trailing.equalTo(container).inset(15)
+            make.top.bottom.equalTo(containerNoResults).inset(8)
+            make.leading.trailing.equalTo(containerNoResults).inset(15)
         }
+    }
+    
+    // MARK: - No internet
+    func setupNoInternet() {
+        let symbolConfig = UIImage.SymbolConfiguration(pointSize: 90)
+
+        noInternetLabel.text = "Нет соединения"
+        noInternetLabel.textColor = .white
+        noInternetLabel.textAlignment = .center
+        
+        noInternetLabel.isUserInteractionEnabled = true
+
+        containerForNoInt.translatesAutoresizingMaskIntoConstraints = false
+        containerForNoInt.backgroundColor = UIColor(named: Colors.rtBlue)
+        containerForNoInt.layer.cornerRadius = 18
+        containerForNoInt.isUserInteractionEnabled = false
+        
+        emptyView.addSubviews(containerForNoInt)
+        containerForNoInt.addSubviews(noInternetLabel)
+
+        noInternetLabel.snp.makeConstraints { make in
+            make.top.bottom.equalTo(containerForNoInt).inset(8)
+            make.leading.trailing.equalTo(containerForNoInt).inset(10)
+        }
+
+
+        noInternetImage.image = UIImage(systemName: "icloud.slash", withConfiguration: symbolConfig)
+        noInternetImage.tintColor = UIColor(named: Colors.rtBlue)
+
+        emptyView.addSubviews(noInternetImage)
+        
+        noInternetImage.snp.makeConstraints { make in
+            make.top.centerX.equalTo(emptyView)
+        }
+        containerForNoInt.snp.makeConstraints { make in
+            make.top.equalTo(noInternetImage.snp.bottom)
+            make.centerX.equalTo(emptyView)
+        }
+        
     }
     
     // MARK: - Obj-c func
@@ -136,6 +202,10 @@ class SearchVC: UIViewController {
     
     @objc func goBack() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func repeatSeah() {
+        presenter.fetchFilms()
     }
     
 }
@@ -201,7 +271,16 @@ extension SearchVC: SearchViewProtocol {
     }
     
     func failure(error: Error) {
-        fatalError("No request")
+        DispatchQueue.main.async {
+            self.tableView.isHidden = true
+            self.emptyView.isHidden = false
+            self.noResultsLabel.isHidden = true
+            self.containerNoResults.isHidden = true
+            self.noInternetImage.isHidden = false
+            self.noInternetLabel.isHidden = false
+            self.containerForNoInt.isHidden = false
+        }
+
     }
     
     

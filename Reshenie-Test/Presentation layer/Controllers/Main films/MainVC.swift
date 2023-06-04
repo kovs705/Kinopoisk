@@ -16,6 +16,12 @@ class MainVC: UIViewController {
     private var emptyView = UIView()
     
     private var navBar = NavigationBar(isSearch: false)
+    let symbolConfig = UIImage.SymbolConfiguration(pointSize: 22)
+    
+    // no internet error:
+    let noInternetImage = UIImageView()
+    let containerForNoInt = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 25))
+    let noInternetLabel = UILabel()
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -36,8 +42,9 @@ class MainVC: UIViewController {
     // MARK: - Other funcs
     
     private func setupViews() {
-        view.addSubviews(tableView, navBar)
+        view.addSubviews(tableView, navBar, emptyView)
         setupTableView()
+        setupEmptyView()
         makeConstraints()
         
         setupNavBar()
@@ -51,10 +58,40 @@ class MainVC: UIViewController {
             make.height.equalTo(35)
         }
         
+    }
+    
+    func setupNavBarTarget() {
         if !navBar.isSearch {
+            navBar.searchButton.setImage(UIImage(systemName: "magnifyingglass", withConfiguration: symbolConfig), for: .normal)
             navBar.searchButton.addTarget(self, action: #selector(openVC), for: .touchUpInside)
         } else { return }
-        
+    }
+    
+    func setBadConnection() {
+        DispatchQueue.main.async { [self] in
+            tableView.isHidden = true
+            emptyView.isHidden = false
+            containerForNoInt.isHidden = false
+            noInternetImage.isHidden = false
+            noInternetLabel.isHidden = false
+            
+            navBar.searchButton.setImage(UIImage(systemName: "arrow.counterclockwise", withConfiguration: symbolConfig), for: .normal)
+            navBar.searchButton.addTarget(self, action: #selector(repeatSearch), for: .touchUpInside)
+        }
+    }
+    
+    func setGoodConnection() {
+        DispatchQueue.main.async { [self] in
+            tableView.reloadData()
+            tableView.isHidden = false
+            emptyView.isHidden = true
+            containerForNoInt.isHidden = true
+            noInternetImage.isHidden = true
+            noInternetLabel.isHidden = true
+            
+            navBar.searchButton.setImage(UIImage(systemName: "magnifyingglass", withConfiguration: symbolConfig), for: .normal)
+            navBar.searchButton.addTarget(self, action: #selector(openVC), for: .touchUpInside)
+        }
     }
     
     
@@ -68,18 +105,13 @@ class MainVC: UIViewController {
     }
     
     private func setupEmptyView() {
-        let book = UIImageView()
-        book.image = UIImage(systemName: "book.closed.fill")
-        book.tintColor = UIColor(named: Colors.rtBlue)
         
-        emptyView.addSubview(book)
-        book.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.height.equalTo(24)
+        emptyView.snp.makeConstraints { make in
+            make.center.equalTo(view)
+            make.width.height.equalTo(100)
         }
-        emptyView.layer.cornerRadius = (72 / 2)
-        emptyView.backgroundColor = .lightGray
-        emptyView.isHidden = true
+        
+        setupNoInternet()
     }
     
     private func makeConstraints() {
@@ -100,11 +132,54 @@ class MainVC: UIViewController {
         return footerView
     }
     
+    func setupNoInternet() {
+        let symbolConfig = UIImage.SymbolConfiguration(pointSize: 90)
+
+        noInternetLabel.text = "Нет соединения"
+        noInternetLabel.textColor = .white
+        noInternetLabel.textAlignment = .center
+        
+        noInternetLabel.isUserInteractionEnabled = true
+
+        containerForNoInt.translatesAutoresizingMaskIntoConstraints = false
+        containerForNoInt.backgroundColor = UIColor(named: Colors.rtBlue)
+        containerForNoInt.layer.cornerRadius = 18
+        containerForNoInt.isUserInteractionEnabled = false
+        
+        emptyView.addSubviews(containerForNoInt)
+        containerForNoInt.addSubviews(noInternetLabel)
+
+        noInternetLabel.snp.makeConstraints { make in
+            make.top.bottom.equalTo(containerForNoInt).inset(8)
+            make.leading.trailing.equalTo(containerForNoInt).inset(10)
+        }
+
+
+        noInternetImage.image = UIImage(systemName: "icloud.slash", withConfiguration: symbolConfig)
+        noInternetImage.tintColor = UIColor(named: Colors.rtBlue)
+
+        emptyView.addSubviews(noInternetImage)
+        
+        noInternetImage.snp.makeConstraints { make in
+            make.top.centerX.equalTo(emptyView)
+        }
+        containerForNoInt.snp.makeConstraints { make in
+            make.top.equalTo(noInternetImage.snp.bottom)
+            make.centerX.equalTo(emptyView)
+        }
+        
+    }
+    
     
     // MARK: - Obj-c funcs
     @objc func openVC() {
         let coordinator = Builder()
         navigationController?.pushViewController(coordinator.getSearchModule(), animated: true)
+    }
+    
+    @objc func repeatSearch() {
+        print("Trying to make a search again..")
+        presenter.fetchTopFilms()
     }
     
 }
@@ -165,14 +240,11 @@ extension MainVC: MainViewProtocol {
     
     func success() {
         print(presenter.topFilms)
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        self.setGoodConnection()
     }
     
     func failure(error: Error) {
-        print("Hello)))")
+        self.setBadConnection()
     }
     
 }
