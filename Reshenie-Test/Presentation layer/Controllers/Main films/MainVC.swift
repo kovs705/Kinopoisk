@@ -38,7 +38,9 @@ class MainVC: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
     // MARK: - Other funcs
     
     private func setupViews() {
@@ -213,8 +215,6 @@ extension MainVC: UITableViewDelegate {
         let currentFilm = presenter.topFilms[indexPath.row]
         print(currentFilm)
         
-        let coordinator = Builder()
-        navigationController?.pushViewController(coordinator.getSearchModule(), animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -28,8 +28,8 @@ class FilmCell: UITableViewCell {
     }
     
     private func configure(film: Film) {
-        nameLabel.text = film.nameRu
-        genreAndYearLabel.text = "\(getGenres(film: film)) (\(film.year))"
+        nameLabel.text = film.nameRu ?? film.nameEn
+        genreAndYearLabel.text = "\(getGenres(film: film)) (\(film.year ?? "Неизвестно"))"
         setupImage(film: film)
     }
     
