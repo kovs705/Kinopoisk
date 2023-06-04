@@ -20,18 +20,30 @@ class SearchVC: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         view.backgroundColor = .systemBackground
-        presenter.searchRequest = "Ёлки"
+        presenter.searchRequest = ""
         presenter.fetchFilms()
+        
+        check()
         
         navigationController?.navigationBar.isHidden = true
         setupViews()
         
     }
     
+    func check() {
+        if presenter.searchRequest!.isEmpty {
+            tableView.isHidden = true
+            emptyView.isHidden = false
+        } else {
+            tableView.isHidden = false
+            emptyView.isHidden = true
+        }
+    }
+    
     
     // MARK: - Other funcs
     private func setupViews() {
-        view.addSubviews(tableView, navBar)
+        view.addSubviews(emptyView, tableView, navBar)
         setupTableView()
         makeConstraints()
         setupNavBar()
@@ -44,6 +56,13 @@ class SearchVC: UIViewController {
             make.leading.trailing.bottom.equalTo(view)
             make.top.equalTo(navBar.snp.bottom).offset(20)
         }
+        
+        emptyView.snp.makeConstraints { make in
+            make.center.equalTo(view)
+            make.width.height.equalTo(100)
+        }
+        
+        setupEmptyView()
     }
     
     private func setupNavBar() {
@@ -80,17 +99,38 @@ class SearchVC: UIViewController {
         return footerView
     }
     
-    func stopIt() {
+    func setupEmptyView() {
+        let noResultsLabel = UILabel()
+        noResultsLabel.text = "Не найдено"
+        noResultsLabel.textColor = .white
+        noResultsLabel.textAlignment = .center
         
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 25))
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.backgroundColor = UIColor(named: Colors.rtBlue)
+        container.layer.cornerRadius = 15
+        
+        emptyView.addSubviews(container)
+        container.addSubviews(noResultsLabel)
+        
+        
+        container.snp.makeConstraints { make in
+            make.center.equalTo(emptyView)
+        }
+        
+        noResultsLabel.snp.makeConstraints { make in
+            make.top.bottom.equalTo(container).inset(8)
+            make.leading.trailing.equalTo(container).inset(15)
+        }
     }
     
     // MARK: - Obj-c func
     @objc func textFieldDidChange(_ textField: UITextField) {
         presenter.searchRequest = textField.text
         guard let request = presenter.searchRequest else {
-            
             return
         }
+        check()
         presenter.makeSearchRequest(from: request)
     }
     
@@ -147,38 +187,6 @@ extension SearchVC: UITableViewDelegate {
         }
     }
 }
-
-//    func configureCategoryLabel() {
-//
-//        let container = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 25))
-//        container.translatesAutoresizingMaskIntoConstraints = false
-//        container.backgroundColor = UIColor(named: Colors.rtBlue)
-//        container.layer.cornerRadius = 15
-//
-//        backImage.addSubview(container)
-//        container.addSubview(categoryLabel)
-//
-//        // backImage.addSubview(categoryLabel)
-////        categoryLabel.backgroundColor = UIColor(named: Colors.purplePrimary.rawValue)
-////        categoryLabel.layer.cornerRadius = 10
-////
-//        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
-//
-//        categoryLabel.textAlignment = .center
-//
-//
-//        container.snp.makeConstraints { make in
-//
-//            make.leading.equalTo(backImage.snp.leading).inset(25)
-//
-//        }
-//
-//        categoryLabel.snp.makeConstraints { make in
-//            make.top.bottom.equalTo(container).inset(5)
-//            make.leading.trailing.equalTo(container).inset(15)
-//        }
-//
-//    }
 
 
 

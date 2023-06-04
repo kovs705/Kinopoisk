@@ -88,11 +88,6 @@ class MainVC: UIViewController {
             make.leading.trailing.bottom.equalTo(view)
             make.top.equalTo(navBar.snp.bottom).offset(20)
         }
-        
-//        emptyView.snp.makeConstraints { make in
-//            make.center.equalTo(view)
-//            make.width.height.equalTo(72)
-//        }
     }
     
     private func spinnerViewSetup() -> UIView {
