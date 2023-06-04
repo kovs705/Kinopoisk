@@ -21,6 +21,7 @@ protocol MainPresenterProtocol: AnyObject {
     init(view: MainViewProtocol, networkService: NetworkService)
     
     func fetchTopFilms()
+    func reload()
 }
 
 final class MainPresenter: MainPresenterProtocol {
@@ -46,6 +47,25 @@ final class MainPresenter: MainPresenterProtocol {
             switch result {
             case .success(let films):
                 guard let films else { return }
+                self.topFilms.append(contentsOf: films)
+                self.view?.success()
+                self.isFetching = false
+            case .failure(let error):
+                print(error)
+                self.view?.failure(error: error)
+                self.isFetching = false
+            }
+        }
+    }
+    
+    func reload() {
+        let request = TopFilmsRequest(page: 1)
+        networkService.request(request) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let films):
+                guard let films else { return }
+                self.topFilms.removeAll()
                 self.topFilms.append(contentsOf: films)
                 self.view?.success()
                 self.isFetching = false

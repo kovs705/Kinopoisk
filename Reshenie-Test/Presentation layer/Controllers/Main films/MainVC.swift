@@ -239,7 +239,6 @@ extension MainVC: UITableViewDelegate {
 extension MainVC: MainViewProtocol {
     
     func success() {
-        print(presenter.topFilms)
         self.setGoodConnection()
     }
     
