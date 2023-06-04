@@ -50,8 +50,6 @@ final class DefaultNetworkService: NetworkService {
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.allHTTPHeaderFields = request.headers
         
-        print("Making request from \(urlRequest)")
-        
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 return completion(.failure(error))

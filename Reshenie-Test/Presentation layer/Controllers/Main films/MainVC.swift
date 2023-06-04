@@ -16,7 +16,6 @@ class MainVC: UIViewController {
     private var emptyView = UIView()
     
     private var navBar = NavigationBar(isSearch: false)
-    let symbolConfig = UIImage.SymbolConfiguration(pointSize: 22)
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -27,6 +26,10 @@ class MainVC: UIViewController {
         
         presenter.fetchTopFilms()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
     }
     
     
@@ -48,11 +51,9 @@ class MainVC: UIViewController {
             make.height.equalTo(35)
         }
         
-        if navBar.isSearch {
-            navBar.searchField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        } else {
+        if !navBar.isSearch {
             navBar.searchButton.addTarget(self, action: #selector(openVC), for: .touchUpInside)
-        }
+        } else { return }
         
     }
     
@@ -109,11 +110,6 @@ class MainVC: UIViewController {
     @objc func openVC() {
         let coordinator = Builder()
         navigationController?.pushViewController(coordinator.getSearchModule(), animated: true)
-    }
-    
-    // MARK: - Obj-c funcs
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        print(textField.text)
     }
     
 }

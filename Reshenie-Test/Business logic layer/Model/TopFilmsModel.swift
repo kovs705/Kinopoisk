@@ -12,7 +12,7 @@ struct TopFilmsResponse: Decodable {
     let films: [TopFilm]
 }
 
-struct TopFilm: Codable, Hashable {
+struct TopFilm: Codable, Hashable, FilmProtocol {
     let filmId: Int
     let nameRu: String?
     let nameEn: String?

@@ -7,6 +7,17 @@
 
 import Foundation
 
+protocol FilmProtocol {
+    var filmId: Int { get }
+    var nameRu: String? { get }
+    var nameEn: String? { get }
+    var year: String { get }
+    var countries: [Country] { get }
+    var genres: [Genre] { get }
+    var rating: String { get }
+    var ratingVoteCount: Int { get }
+}
+
 struct FilmResponse: Decodable {
     let keyword: String
     let pagesCount: Int
@@ -14,7 +25,7 @@ struct FilmResponse: Decodable {
     let searchFilmsCountResult: Int
 }
 
-struct Film: Codable, Hashable {
+struct Film: Codable, Hashable, FilmProtocol {
     let filmId: Int
     let nameRu: String?
     let nameEn: String?
@@ -26,8 +37,9 @@ struct Film: Codable, Hashable {
     let genres: [Genre]
     let rating: String
     let ratingVoteCount: Int
-    let posterUrl: URL?
-    let posterUrlPreview: URL?
+    let posterUrl: String?
+    let posterUrlPreview: String?
+    
 }
 
 struct Country: Codable, Hashable {
@@ -37,3 +49,4 @@ struct Country: Codable, Hashable {
 struct Genre: Codable, Hashable {
     let genre: String
 }
+

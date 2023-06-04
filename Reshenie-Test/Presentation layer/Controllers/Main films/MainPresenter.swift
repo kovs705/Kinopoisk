@@ -20,7 +20,6 @@ protocol MainPresenterProtocol: AnyObject {
     
     init(view: MainViewProtocol, networkService: NetworkService)
     
-    var searchRequest: String? { get set }
     func fetchTopFilms()
 }
 
@@ -33,7 +32,6 @@ final class MainPresenter: MainPresenterProtocol {
     var isFetching = false
     var topFilms = [TopFilm]()
     
-    var searchRequest: String?
     
     required init(view: MainViewProtocol, networkService: NetworkService) {
         self.view = view

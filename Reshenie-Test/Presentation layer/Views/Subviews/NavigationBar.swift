@@ -51,7 +51,7 @@ class NavigationBar: UIView {
     private func configureTitleLabel() {
         titleLabel.numberOfLines = 1
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        titleLabel.text = "Фильмы"
+        titleLabel.text = "Топ-250"
     }
     
     private func configureSearchButton() {
@@ -68,14 +68,6 @@ class NavigationBar: UIView {
     private func configureBackButton() {
         backButton.setImage(UIImage(systemName: "arrow.left", withConfiguration: symbolConfig), for: .normal)
         backButton.tintColor = UIColor(named: Colors.rtBlue)
-    }
-    
-    
-
-    
-    @objc func goBack() {
-        let vc = SearchVC()
-        vc.dismiss(animated: true)
     }
     
     

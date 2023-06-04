@@ -22,6 +22,7 @@ protocol SearchPresenterProtocol: AnyObject {
     
     var searchRequest: String? { get set }
     func fetchFilms()
+    func makeSearchRequest(from searchRequest: String)
 }
 
 final class SearchPresenter: SearchPresenterProtocol {
@@ -37,17 +38,38 @@ final class SearchPresenter: SearchPresenterProtocol {
     
     required init(view: SearchViewProtocol, networkService: NetworkService) {
         self.view = view
+        self.networkService = networkService
     }
     
     
     func fetchFilms() {
-        let request = FilmsRequest(keyword: searchRequest, page: page, resultAction: .searchByKeyword)
+        let request = FilmsRequest(keyword: searchRequest, page: page)
         page += 1
         networkService.request(request) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let films):
                 guard let films else { return }
+                self.films.append(contentsOf: films)
+                self.view?.success()
+                self.isFetching = false
+            case .failure(let error):
+                print(error)
+                self.view?.failure(error: error)
+                self.isFetching = false
+            }
+        }
+    }
+    
+    func makeSearchRequest(from searchRequest: String) {
+        let request = FilmsRequest(keyword: searchRequest, page: 1)
+        
+        networkService.request(request) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let films):
+                guard let films else { return }
+                self.films.removeAll()
                 self.films.append(contentsOf: films)
                 self.view?.success()
                 self.isFetching = false

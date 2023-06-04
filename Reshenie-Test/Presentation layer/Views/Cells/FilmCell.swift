@@ -21,16 +21,25 @@ class FilmCell: UITableViewCell {
     let placeholderImg = UIImage(named: Images.kinopoisk)
     
     func setupCell(film: Film) {
+        setupViews()
         configure(film: film)
         
-        setupViews()
         setLayout()
     }
     
     private func configure(film: Film) {
         nameLabel.text = film.nameRu
-        genreAndYearLabel.text = "\(film.genres) (\(film.year))"
+        genreAndYearLabel.text = "\(getGenres(film: film)) (\(film.year))"
         setupImage(film: film)
+    }
+    
+    func getGenres(film: Film) -> String {
+        var finalString = ""
+        for genre in film.genres {
+            finalString.append(contentsOf: genre.genre)
+            finalString.append(", ")
+        }
+        return finalString
     }
     
     func setupImage(film: Film) {
@@ -41,7 +50,7 @@ class FilmCell: UITableViewCell {
             return
         }
         ImageClient.shared.setImage(
-            from: urlToImage.absoluteString,
+            from: urlToImage,
             placeholderImage: placeholderImg
         ) { [weak self] image in
             guard let self = self else { return }
@@ -75,18 +84,21 @@ class FilmCell: UITableViewCell {
     
     private func setupNameLabel() {
         nameLabel.numberOfLines = 1
-        nameLabel.font = UIFont.systemFont(ofSize: 17)
+        nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        genreAndYearLabel.textColor = .label
     }
     
     private func setupGenreAndYearLabel() {
         genreAndYearLabel.numberOfLines = 2
-        genreAndYearLabel.font = UIFont.systemFont(ofSize: 14)
+        genreAndYearLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         genreAndYearLabel.textColor = .gray
     }
     
     private func setupBaseBack() {
         baseBack.layer.cornerRadius = 20
+        baseBack.backgroundColor = .systemBackground
         baseBack.addShadow(color: UIColor.black.cgColor, opacity: 0.3, shadowOffset: CGSize(width: 0, height: 5), shadowRadius: 10)
+        
     }
     
     
@@ -101,24 +113,24 @@ class FilmCell: UITableViewCell {
         baseBack.addSubviews(nameLabel, filmImageView, genreAndYearLabel, loadingActivityIndicator)
         
         baseBack.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalTo(contentView).inset(20)
+            make.leading.trailing.top.bottom.equalTo(contentView).inset(12)
         }
         
         filmImageView.snp.makeConstraints { make in
-            make.centerX.equalTo(baseBack)
-            make.top.leading.bottom.equalTo(baseBack)
-            make.width.equalTo(35)
+            make.leading.equalTo(baseBack).inset(15)
+            make.top.bottom.equalTo(baseBack).inset(20)
+            make.width.equalTo(60)
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(baseBack).inset(25)
-            make.leading.equalTo(filmImageView.snp.trailing).inset(15)
+            make.top.equalTo(baseBack.snp.top).offset(30)
+            make.leading.equalTo(filmImageView.snp.trailing).inset(-20)
             make.trailing.equalTo(baseBack.snp.trailing).inset(25)
         }
         
         genreAndYearLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).inset(15)
-            make.leading.equalTo(filmImageView.snp.trailing).inset(15)
+            make.top.equalTo(nameLabel.snp.bottom).offset(7)
+            make.leading.equalTo(filmImageView.snp.trailing).inset(-20)
             make.trailing.equalTo(baseBack.snp.trailing).inset(25)
         }
     }

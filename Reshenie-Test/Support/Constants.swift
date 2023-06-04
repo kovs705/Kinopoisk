@@ -8,6 +8,12 @@
 import Foundation
 
 
+enum Texts {
+    static let genres = "Жанры: "
+    static let countries = "Страны: "
+    static let year = "Год: "
+}
+
 enum Colors {
     static let rtBlue = "rtBlue"
 }

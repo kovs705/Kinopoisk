@@ -30,7 +30,6 @@ class TopFilmCell: UITableViewCell {
     private func configure(film: TopFilm) {
         nameLabel.text = film.nameRu
         genreAndYearLabel.text = "\(getGenres(film: film)) (\(film.year))"
-        print(film.genres)
         setupImage(film: film)
     }
     
