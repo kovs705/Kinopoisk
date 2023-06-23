@@ -16,7 +16,7 @@ struct TopFilm: Codable, Hashable, FilmProtocol {
     let filmId: Int
     let nameRu: String?
     let nameEn: String?
-    let year: String?
+    let year: String
     let filmLength: String
     let countries: [Country]
     let genres: [Genre]

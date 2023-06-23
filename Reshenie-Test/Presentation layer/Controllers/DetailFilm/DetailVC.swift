@@ -318,8 +318,12 @@ extension DetailVC: DetailViewProtocol {
         var finalString = Texts.genres
         if film.genres.count > 1 {
             for genre in film.genres {
-                finalString.append(contentsOf: genre.genre)
-                finalString.append(", ")
+                if genre == film.genres.last {
+                    finalString.append(contentsOf: genre.genre)
+                } else {
+                    finalString.append(contentsOf: genre.genre)
+                    finalString.append(", ")
+                }
             }
         } else {
             for genre in film.genres {
@@ -333,8 +337,12 @@ extension DetailVC: DetailViewProtocol {
         var finalString = Texts.countries
         if film.countries.count > 1 {
             for country in film.countries {
-                finalString.append(contentsOf: country.country)
-                finalString.append(", ")
+                if country == film.countries.last {
+                    finalString.append(contentsOf: country.country)
+                } else {
+                    finalString.append(contentsOf: country.country)
+                    finalString.append(", ")
+                }
             }
         } else {
             for country in film.countries {
