@@ -11,7 +11,7 @@ protocol FilmProtocol {
     var filmId: Int { get }
     var nameRu: String? { get }
     var nameEn: String? { get }
-    var year: String? { get }
+    var year: String { get }
     var countries: [Country] { get }
     var genres: [Genre] { get }
     var rating: String { get }
@@ -30,7 +30,7 @@ struct Film: Codable, Hashable, FilmProtocol {
     let nameRu: String?
     let nameEn: String?
     let type: String
-    let year: String?
+    let year: String
     let description: String?
     let filmLength: String?
     let countries: [Country]
