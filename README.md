@@ -1,5 +1,5 @@
-# Reshenie-Test
-Test task for "Решение" company. Uses unofficial Kinopoisk API to get data with information about films or TV shows. 
+# Kinopoisk
+Search TV shows, movies or cartoons using unofficial Kinopoisk API. 
 
 ## Stack
 - MVP
