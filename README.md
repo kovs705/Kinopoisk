@@ -4,7 +4,7 @@ Search TV shows, movies or cartoons using unofficial Kinopoisk API.
 ## Stack
 - MVP
 - Programmatic UI
-- Unofficial [Kinopoisk API](https://kinopoiskapiunofficial.tech/documentation/api/)
+- Unofficial [Kinopoisk API](https://kinopoiskapiunofficial.tech)
 - SnapKit
 
 ## Requirements
